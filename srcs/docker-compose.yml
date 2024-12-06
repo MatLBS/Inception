@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # Database
+  mariadb:
+    build: ./requirements/mariadb/
+    ports:
+      - '3306:3306'
+    # volumes:
+    #   - mariadb_data:/var/lib/mysql
+    env_file:
+      - .env
+    restart: always
+
+
+  wordpress:
+    depends_on:
+      - mariadb
+    build: ./requirements/wordpress/
+    # volumes:      
+    #   - /data/html:/var/www/html
+    env_file:
+      - .env
+    ports:
+      - "9000"
+    links:
+      - mariadb
+    restart: always
+
+
+  nginx:
+    build: ./requirements/nginx/
+    # volumes:
+    #   - nginx:/etc/nginx/conf.d
+    ports:
+      - "443"
+    links:
+      - wordpress
+    restart: always
