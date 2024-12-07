@@ -1,4 +1,4 @@
-version: '3.8'
+# version: '3.8'
 
 services:
   # Database
@@ -22,7 +22,7 @@ services:
     env_file:
       - .env
     ports:
-      - "9000"
+      - "9000:9000"
     links:
       - mariadb
     restart: always
@@ -33,7 +33,7 @@ services:
     # volumes:
     #   - nginx:/etc/nginx/conf.d
     ports:
-      - "443"
+      - "443:443"
     links:
       - wordpress
     restart: always

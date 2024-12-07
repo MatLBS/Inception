@@ -1,16 +1,10 @@
 FROM debian:bullseye
 
 RUN apt-get update -y &&\
-apt install mariadb-server mariadb-client -y
-# RUN systemctl enable mariadb
-# RUN systemctl start mariadb
-# RUN systemctl status mariadb
+apt install mariadb-server -y
 
 EXPOSE 3306
 
-# LABEL version="1.0"
-# LABEL description="MariaDB Server"
-
-COPY conf/mariadb.conf /etc/mariadb/mariadb.conf
+COPY conf/mariadb.conf /etc/mysql/mariadb.conf
 
 CMD ["mariadbd"]
