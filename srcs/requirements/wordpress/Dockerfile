@@ -14,3 +14,5 @@ RUN    mkdir -p /var/run/wordpress
 EXPOSe 9000
 
 COPY conf/wordpress.conf /etc/wordpress/wordpress.conf
+
+CMD ["wordpress", "-g", "daemon off;"]

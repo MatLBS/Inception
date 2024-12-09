@@ -3,37 +3,76 @@
 services:
   # Database
   mariadb:
+    container_name: mariadb
     build: ./requirements/mariadb/
-    ports:
-      - '3306:3306'
-    # volumes:
-    #   - mariadb_data:/var/lib/mysql
+    stdin_open: true
+    tty: true
+    expose:
+      - '3306'
+    volumes:
+      - mariadb_volume:/var/lib/mysql
     env_file:
       - .env
-    restart: always
-
-
-  wordpress:
-    depends_on:
-      - mariadb
-    build: ./requirements/wordpress/
-    # volumes:      
-    #   - /data/html:/var/www/html
-    env_file:
-      - .env
-    ports:
-      - "9000:9000"
-    links:
-      - mariadb
+    networks:
+      - myNetwork 
     restart: always
 
 
   nginx:
+    container_name: nginx
     build: ./requirements/nginx/
-    # volumes:
-    #   - nginx:/etc/nginx/conf.d
+    depends_on:
+      - wordpress
+    stdin_open: true
+    tty: true
+    networks:
+      - myNetwork 
     ports:
       - "443:443"
     links:
       - wordpress
     restart: always
+
+  
+  wordpress:
+    depends_on:
+      - mariadb
+    container_name: wordpress
+    build: ./requirements/wordpress/
+    stdin_open: true
+    tty: true
+    volumes:      
+      - wordpress_volume:/var/www/html
+    env_file:
+      - .env
+    networks:
+      - myNetwork 
+    expose:
+      - "9000"
+    links:
+      - mariadb
+    restart: always
+
+#Network
+
+networks:
+  myNetwork:
+    driver: bridge
+
+#Volumes
+
+volumes:
+  mariadb_volume:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/matle-br/data/mariadb'
+
+  wordpress_volume:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '/home/matle-br/data/wordpress'
+

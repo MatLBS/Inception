@@ -12,4 +12,4 @@ RUN apt-get update && \
 
 COPY conf/nginx.conf /etc/nginx/nginx.conf
 
-CMD ["nginx"]
+CMD ["nginx", "-g", "daemon off;"]

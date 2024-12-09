@@ -7,4 +7,4 @@ EXPOSE 3306
 
 COPY conf/mariadb.conf /etc/mysql/mariadb.conf
 
-CMD ["mariadbd"]
+CMD ["mariadbd", "-g", "daemon off;"]

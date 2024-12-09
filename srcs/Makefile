@@ -21,6 +21,11 @@ RM = rm -f
 
 all: docker compose up --remove-orphans
 
+docker network create --driver=bridge myNetwork
+
+#comamnde pour liberer un port
+#sudo systemctl stop mariadb
+
 
 clean :
 	@$(RM) -r $(OBJ_DIR)
